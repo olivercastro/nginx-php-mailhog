@@ -1,0 +1,30 @@
+version: "3.2"
+
+services:
+  server:
+    build: ./nginx
+    networks:
+      - appnet
+    ports:
+      - "80:80"
+    volumes:
+      - type: bind
+        source: ./app
+        target: /var/www/html
+  web:
+    build: ./web
+    networks:
+      - appnet
+    volumes:
+      - type: bind
+        source: ./app
+        target: /var/www/html
+  mail: 
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+    networks:
+      - appnet
+networks:
+  appnet:
+    driver: bridge
